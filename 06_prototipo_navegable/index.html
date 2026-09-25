@@ -867,74 +867,87 @@
     <!-- Bootstrap JS: permite que funcionen los modales y el navbar responsive -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Script propio para simular el login del estudiante -->
+    <!-- Sesión simulada para el prototipo -->
     <script>
-      // Captura el formulario de inicio de sesión
       const loginForm = document.getElementById('loginForm');
-
-      // Captura la vista pública y la vista del estudiante
+      const loginEmail = document.getElementById('loginEmail');
+      const loginPassword = document.getElementById('loginPassword');
+      const rememberMe = document.getElementById('rememberMe');
       const publicContent = document.getElementById('publicContent');
       const studentDashboard = document.getElementById('studentDashboard');
-
-      // Captura el botón de cerrar sesión
-      const logoutBtn = document.getElementById('logoutBtn');
-      const openLanguagesBtn = document.getElementById('openLanguagesBtn');
       const languagesView = document.getElementById('languagesView');
-      const backToDashboardBtn = document.getElementById('backToDashboardBtn');
+      const logoutBtn = document.getElementById('logoutBtn');
       const logoutBtnLanguages = document.getElementById('logoutBtnLanguages');
+      const openLanguagesBtn = document.getElementById('openLanguagesBtn');
+      const backToDashboardBtn = document.getElementById('backToDashboardBtn');
+      const sessionKey = 'era_demo_session';
 
-      // Abre la vista de explorar lenguajes
-openLanguagesBtn.addEventListener('click', function () {
-  studentDashboard.classList.add('d-none');
-  languagesView.classList.remove('d-none');
-  window.scrollTo(0, 0);
-});
+      function mostrarDashboard() {
+        publicContent.classList.add('d-none');
+        languagesView.classList.add('d-none');
+        studentDashboard.classList.remove('d-none');
+        window.scrollTo(0, 0);
+      }
 
-// Vuelve al dashboard desde explorar lenguajes
-backToDashboardBtn.addEventListener('click', function () {
-  languagesView.classList.add('d-none');
-  studentDashboard.classList.remove('d-none');
-  window.scrollTo(0, 0);
-});
-
-// Cierra sesión desde la vista de lenguajes
-logoutBtnLanguages.addEventListener('click', function () {
-  languagesView.classList.add('d-none');
-  publicContent.classList.remove('d-none');
-  window.scrollTo(0, 0);
-});
-
-      // Evento para iniciar sesión
-      loginForm.addEventListener('submit', function (event) {
-        event.preventDefault();
-
-        // Obtiene el correo digitado
-        const email = document.getElementById('loginEmail').value;
-
-        // Valida el usuario estudiante de demostración
-        if (email === 'estudiante@demo.com') {
-          const loginModal = bootstrap.Modal.getInstance(document.getElementById('loginModal'));
-          loginModal.hide();
-
-          // Oculta la página principal
-          publicContent.classList.add('d-none');
-
-          // Muestra el dashboard del estudiante
-          studentDashboard.classList.remove('d-none');
-
-          // Lleva la pantalla al inicio
-          window.scrollTo(0, 0);
-        } else {
-          alert('Para esta demo usa el correo: estudiante@demo.com');
-        }
-      });
-
-      // Evento para cerrar sesión
-      logoutBtn.addEventListener('click', function () {
+      function cerrarSesion() {
+        localStorage.removeItem(sessionKey);
+        sessionStorage.removeItem(sessionKey);
+        languagesView.classList.add('d-none');
         studentDashboard.classList.add('d-none');
         publicContent.classList.remove('d-none');
         window.scrollTo(0, 0);
+      }
+
+      // Recupera la sesión cuando se recarga la página.
+      const savedSession = localStorage.getItem(sessionKey) || sessionStorage.getItem(sessionKey);
+      if (savedSession) {
+        try {
+          const user = JSON.parse(savedSession);
+          if (user.email === 'estudiante@demo.com' && user.role === 'estudiante') {
+            mostrarDashboard();
+          } else {
+            cerrarSesion();
+          }
+        } catch (error) {
+          cerrarSesion();
+        }
+      }
+
+      openLanguagesBtn.addEventListener('click', function () {
+        studentDashboard.classList.add('d-none');
+        languagesView.classList.remove('d-none');
+        window.scrollTo(0, 0);
       });
+
+      backToDashboardBtn.addEventListener('click', function () {
+        languagesView.classList.add('d-none');
+        studentDashboard.classList.remove('d-none');
+        window.scrollTo(0, 0);
+      });
+
+      loginForm.addEventListener('submit', function (event) {
+        event.preventDefault();
+        const email = loginEmail.value.trim().toLowerCase();
+        const password = loginPassword.value.trim();
+
+        if (email !== 'estudiante@demo.com' || password === '') {
+          alert('Para esta demo usa estudiante@demo.com y una contraseña no vacía.');
+          return;
+        }
+
+        const user = JSON.stringify({ email: email, role: 'estudiante' });
+        localStorage.removeItem(sessionKey);
+        sessionStorage.removeItem(sessionKey);
+        const storage = rememberMe.checked ? localStorage : sessionStorage;
+        storage.setItem(sessionKey, user);
+
+        const loginModal = bootstrap.Modal.getOrCreateInstance(document.getElementById('loginModal'));
+        loginModal.hide();
+        mostrarDashboard();
+      });
+
+      logoutBtn.addEventListener('click', cerrarSesion);
+      logoutBtnLanguages.addEventListener('click', cerrarSesion);
     </script>
   </body>
 </html>
