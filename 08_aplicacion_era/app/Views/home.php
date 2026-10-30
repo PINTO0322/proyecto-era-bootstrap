@@ -93,13 +93,33 @@
 </main>
 <?php else: ?>
 <main>
-    <section class="dashboard-hero py-5">
-        <div class="container py-4">
-            <p class="mb-2">Panel del usuario</p>
-            <h1 class="fw-bold">Bienvenido, <?= esc($nombreUsuario) ?></h1>
-            <p class="mb-4">Continúa tu proceso de aprendizaje y encuentra el refuerzo que necesitas.</p>
-            <a class="btn btn-light btn-lg" href="<?= base_url('catalogo') ?>">Explorar catálogo</a>
+    <section class="container pt-5 pb-4">
+        <h1 class="fw-bold">
+            ¡Hola, <?= esc($nombreUsuario) ?>! 👋
+        </h1>
+
+        <p class="text-secondary mb-4">
+            Continúa aprendiendo y encuentra apoyo para tus dudas de programación.
+        </p>
+
+        <div class="d-flex flex-column flex-sm-row gap-3">
+            <a class="btn btn-primary btn-lg"
+               href="<?= base_url('catalogo') ?>">
+                <i class="bi bi-book me-2" aria-hidden="true"></i>
+                Explorar Lenguajes
+            </a>
+
+            <button class="btn btn-success btn-lg"
+                    type="button"
+                    disabled>
+                <i class="bi bi-search me-2" aria-hidden="true"></i>
+                Buscar Tutor
+            </button>
         </div>
+
+        <p class="small text-secondary mt-3 mb-0">
+            La búsqueda de tutores estará disponible próximamente.
+        </p>
     </section>
     <section class="container py-5">
         <div class="row g-4 mb-5">
