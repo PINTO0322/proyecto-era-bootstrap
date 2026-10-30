@@ -11,7 +11,16 @@
 <body>
 <nav class="navbar navbar-expand-lg bg-white border-bottom sticky-top">
     <div class="container py-2">
-        <a class="navbar-brand brand" href="<?= base_url('/') ?>">eRa</a>
+        <a class="navbar-brand d-flex align-items-center gap-2"
+   href="<?= base_url('/') ?>">
+    <span class="brand">eRa</span>
+
+    <?php if ($autenticado && (int) session()->get('usuario_rol') === 2): ?>
+        <span class="text-dark fw-semibold lh-sm small">
+            Centro de<br>Aprendizaje
+        </span>
+    <?php endif; ?>
+</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="menu">
             <div class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
