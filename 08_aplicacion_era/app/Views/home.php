@@ -131,11 +131,42 @@
         </p>
     </section>
     <section class="container py-5">
-        <div class="row g-4 mb-5">
-            <div class="col-md-4"><div class="stat-card"><i class="bi bi-code-square"></i><strong><?= $totalLenguajes ?></strong><span>Lenguajes</span></div></div>
-            <div class="col-md-4"><div class="stat-card"><i class="bi bi-journal-code"></i><strong><?= $totalTemas ?></strong><span>Temas</span></div></div>
-            <div class="col-md-4"><div class="stat-card"><i class="bi bi-people"></i><strong><?= $totalTutores ?></strong><span>Tutores</span></div></div>
-        </div>
+                <section class="bg-white border rounded-4 p-4 shadow-sm mb-5"
+                 aria-labelledby="titulo-progreso">
+            <h2 id="titulo-progreso" class="h4 fw-bold mb-4">
+                Progreso Académico
+            </h2>
+
+            <div class="row g-3">
+                <div class="col-sm-6 col-lg-4">
+                    <div class="stat-card h-100">
+                        <i class="bi bi-mortarboard" aria-hidden="true"></i>
+                        <strong aria-label="Dato no disponible">—</strong>
+                        <span>Tutorías completadas</span>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-4">
+                    <div class="stat-card h-100">
+                        <i class="bi bi-clock" aria-hidden="true"></i>
+                        <strong aria-label="Dato no disponible">—</strong>
+                        <span>Horas de aprendizaje</span>
+                    </div>
+                </div>
+
+                <div class="col-sm-6 col-lg-4">
+                    <div class="stat-card h-100">
+                        <i class="bi bi-graph-up-arrow" aria-hidden="true"></i>
+                        <strong aria-label="Dato no disponible">—</strong>
+                        <span>Progreso general</span>
+                    </div>
+                </div>
+            </div>
+
+            <p class="small text-secondary mt-3 mb-0">
+                Los indicadores están pendientes de conexión con tus datos de aprendizaje.
+            </p>
+        </section>
         <div class="d-flex justify-content-between align-items-end mb-4">
             <div><p class="section-kicker">APRENDIZAJE</p><h2 class="fw-bold mb-0">Selecciona un lenguaje</h2></div>
             <a class="btn btn-primary" href="<?= base_url('catalogo') ?>">Ver todos los temas</a>
