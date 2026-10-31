@@ -141,7 +141,11 @@
                 <div class="col-sm-6 col-lg-4">
                     <div class="stat-card h-100">
                         <i class="bi bi-mortarboard" aria-hidden="true"></i>
-                        <strong aria-label="Dato no disponible">—</strong>
+                        <strong>
+                            <?= $tutoriasCompletadas !== null
+                                ? (int) $tutoriasCompletadas
+                                : '—' ?>
+                        </strong>
                         <span>Tutorías completadas</span>
                     </div>
                 </div>
@@ -164,7 +168,7 @@
             </div>
 
             <p class="small text-secondary mt-3 mb-0">
-                Los indicadores están pendientes de conexión con tus datos de aprendizaje.
+                Las tutorías completadas corresponden a tus sesiones finalizadas. Las horas de aprendizaje y el progreso general están pendientes de conexión.
             </p>
         </section>
 

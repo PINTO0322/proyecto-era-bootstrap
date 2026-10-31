@@ -19,8 +19,28 @@ class Home extends BaseController
             ->get()
             ->getResultArray();
 
+                    $tutoriasCompletadas = null;
+
+        if (
+            session()->get('autenticado')
+            && (int) session()->get('usuario_rol') === 2
+        ) {
+            $estudiante = $db->table('estudiante')
+                ->where('id_usuario', (int) session()->get('usuario_id'))
+                ->get()
+                ->getRowArray();
+
+            if ($estudiante !== null) {
+                $tutoriasCompletadas = $db->table('sesion_tutoria')
+                    ->where('id_estudiante', (int) $estudiante['id_estudiante'])
+                    ->where('id_estado', 14)
+                    ->countAllResults();
+            }
+        }
+
         return view('home', [
             'autenticado' => (bool) session()->get('autenticado'),
+            'tutoriasCompletadas' => $tutoriasCompletadas,
             'nombreUsuario' => session()->get('usuario_nombre'),
             'lenguajes' => $lenguajes,
             'totalLenguajes' => count($lenguajes),
