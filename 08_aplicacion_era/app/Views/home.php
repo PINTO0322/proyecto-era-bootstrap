@@ -167,6 +167,26 @@
                 Los indicadores están pendientes de conexión con tus datos de aprendizaje.
             </p>
         </section>
+
+        <section class="bg-white border rounded-4 p-4 shadow-sm mb-5"
+                 aria-labelledby="titulo-sesiones">
+            <h2 id="titulo-sesiones" class="h4 fw-bold mb-4">
+                Próximas Sesiones
+            </h2>
+
+            <div class="text-center bg-light rounded-3 p-4">
+                <i class="bi bi-calendar-event fs-1 text-primary"
+                   aria-hidden="true"></i>
+
+                <h3 class="h5 mt-3">
+                    Consulta aquí tus próximas tutorías
+                </h3>
+
+                <p class="text-secondary mb-0">
+                    Esta sección está pendiente de conexión con tus sesiones.
+                </p>
+            </div>
+        </section>
         <div class="d-flex justify-content-between align-items-end mb-4">
             <div><p class="section-kicker">APRENDIZAJE</p><h2 class="fw-bold mb-0">Selecciona un lenguaje</h2></div>
             <a class="btn btn-primary" href="<?= base_url('catalogo') ?>">Ver todos los temas</a>
