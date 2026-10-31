@@ -203,8 +203,28 @@
                         </article>
                     </a>
                 </div>
-            <?php endforeach; ?>
+                        <?php endforeach; ?>
         </div>
+
+        <section class="bg-white border rounded-4 p-4 shadow-sm mt-5"
+                 aria-labelledby="titulo-tutores">
+            <h2 id="titulo-tutores" class="h4 fw-bold mb-4">
+                Tutores
+            </h2>
+
+            <div class="text-center bg-light rounded-3 p-4">
+                <i class="bi bi-people fs-1 text-primary"
+                   aria-hidden="true"></i>
+
+                <h3 class="h5 mt-3">
+                    Encuentra apoyo para tu aprendizaje
+                </h3>
+
+                <p class="text-secondary mb-0">
+                    Esta sección está pendiente de conexión con la información de los tutores.
+                </p>
+            </div>
+        </section>
     </section>
 </main>
 <?php endif; ?>
