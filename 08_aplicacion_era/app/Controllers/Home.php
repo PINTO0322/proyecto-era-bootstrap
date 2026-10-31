@@ -20,6 +20,7 @@ class Home extends BaseController
             ->getResultArray();
 
                     $tutoriasCompletadas = null;
+                    $horasAprendizaje = null;
 
         if (
             session()->get('autenticado')
@@ -35,12 +36,21 @@ class Home extends BaseController
                     ->where('id_estudiante', (int) $estudiante['id_estudiante'])
                     ->where('id_estado', 14)
                     ->countAllResults();
+                $resumenDuracion = $db->table('sesion_tutoria')
+                    ->selectSum('duracion', 'total_minutos')
+                    ->where('id_estudiante', (int) $estudiante['id_estudiante'])
+                    ->where('id_estado', 14)
+                    ->get()
+                    ->getRowArray();
+
+                $horasAprendizaje = (float) ($resumenDuracion['total_minutos'] ?? 0) / 60;
             }
         }
 
         return view('home', [
             'autenticado' => (bool) session()->get('autenticado'),
             'tutoriasCompletadas' => $tutoriasCompletadas,
+            'horasAprendizaje' => $horasAprendizaje,
             'nombreUsuario' => session()->get('usuario_nombre'),
             'lenguajes' => $lenguajes,
             'totalLenguajes' => count($lenguajes),

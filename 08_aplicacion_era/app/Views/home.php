@@ -153,7 +153,11 @@
                 <div class="col-sm-6 col-lg-4">
                     <div class="stat-card h-100">
                         <i class="bi bi-clock" aria-hidden="true"></i>
-                        <strong aria-label="Dato no disponible">—</strong>
+                        <strong>
+                            <?= $horasAprendizaje !== null
+                                ? number_format($horasAprendizaje, 1, ',', '.')
+                                : '—' ?>
+                        </strong>
                         <span>Horas de aprendizaje</span>
                     </div>
                 </div>
@@ -168,7 +172,7 @@
             </div>
 
             <p class="small text-secondary mt-3 mb-0">
-                Las tutorías completadas corresponden a tus sesiones finalizadas. Las horas de aprendizaje y el progreso general están pendientes de conexión.
+                Las tutorías completadas y las horas de aprendizaje corresponden a tus sesiones finalizadas. El progreso general está pendiente de conexión.
             </p>
         </section>
 
