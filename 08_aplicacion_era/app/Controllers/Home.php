@@ -21,6 +21,7 @@ class Home extends BaseController
 
                     $tutoriasCompletadas = null;
                     $horasAprendizaje = null;
+                    $progresoGeneral = null;
 
         if (
             session()->get('autenticado')
@@ -44,6 +45,15 @@ class Home extends BaseController
                     ->getRowArray();
 
                 $horasAprendizaje = (float) ($resumenDuracion['total_minutos'] ?? 0) / 60;
+                $resumenProgreso = $db->table('estudiante_lenguaje')
+                    ->selectAvg('porcentaje_progreso', 'promedio')
+                    ->where('id_estudiante', (int) $estudiante['id_estudiante'])
+                    ->get()
+                    ->getRowArray();
+
+                if ($resumenProgreso['promedio'] !== null) {
+                    $progresoGeneral = (float) $resumenProgreso['promedio'];
+                }
             }
         }
 
@@ -51,6 +61,7 @@ class Home extends BaseController
             'autenticado' => (bool) session()->get('autenticado'),
             'tutoriasCompletadas' => $tutoriasCompletadas,
             'horasAprendizaje' => $horasAprendizaje,
+            'progresoGeneral' => $progresoGeneral,
             'nombreUsuario' => session()->get('usuario_nombre'),
             'lenguajes' => $lenguajes,
             'totalLenguajes' => count($lenguajes),

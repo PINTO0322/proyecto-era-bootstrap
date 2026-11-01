@@ -165,14 +165,18 @@
                 <div class="col-sm-6 col-lg-4">
                     <div class="stat-card h-100">
                         <i class="bi bi-graph-up-arrow" aria-hidden="true"></i>
-                        <strong aria-label="Dato no disponible">—</strong>
+                        <strong>
+                            <?= $progresoGeneral !== null
+                                ? number_format($progresoGeneral, 1, ',', '.') . ' %'
+                                : 'Sin datos' ?>
+                        </strong>
                         <span>Progreso general</span>
                     </div>
                 </div>
             </div>
 
             <p class="small text-secondary mt-3 mb-0">
-                Las tutorías completadas y las horas de aprendizaje corresponden a tus sesiones finalizadas. El progreso general está pendiente de conexión.
+                Las tutorías completadas y las horas corresponden a tus sesiones finalizadas. El progreso general es el promedio de los avances registrados en tus lenguajes. Si no hay registros de progreso, se muestra «Sin datos».
             </p>
         </section>
 
