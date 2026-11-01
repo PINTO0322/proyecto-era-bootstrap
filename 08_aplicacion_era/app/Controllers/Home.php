@@ -22,6 +22,7 @@ class Home extends BaseController
                     $tutoriasCompletadas = null;
                     $horasAprendizaje = null;
                     $progresoGeneral = null;
+                    $proximasSesiones = null;
 
         if (
             session()->get('autenticado')
@@ -51,9 +52,42 @@ class Home extends BaseController
                     ->get()
                     ->getRowArray();
 
-                if ($resumenProgreso['promedio'] !== null) {
+                                if ($resumenProgreso['promedio'] !== null) {
                     $progresoGeneral = (float) $resumenProgreso['promedio'];
                 }
+
+                $ahora = new \DateTimeImmutable(
+                    'now',
+                    new \DateTimeZone('America/Bogota')
+                );
+
+                $proximasSesiones = $db->table('sesion_tutoria AS s')
+                    ->select(
+                        "s.id_sesion, s.fecha, s.hora, s.duracion,
+                        tema.nombre AS tema,
+                        CONCAT(u.nombre, ' ', u.apellido) AS tutor,
+                        estado.nombre AS estado"
+                    )
+                    ->join('tema', 'tema.id_tema = s.id_tema')
+                    ->join('tutor', 'tutor.id_tutor = s.id_tutor')
+                    ->join('usuario AS u', 'u.id_usuario = tutor.id_usuario')
+                    ->join('estado', 'estado.id_estado = s.id_estado')
+                    ->where('s.id_estudiante', (int) $estudiante['id_estudiante'])
+                    ->whereIn('s.id_estado', [12, 13])
+                    ->groupStart()
+                        ->where('s.fecha >', $ahora->format('Y-m-d'))
+                        ->orGroupStart()
+                            ->where('s.fecha', $ahora->format('Y-m-d'))
+                            ->where('s.hora >=', $ahora->format('H:i:s'))
+                        ->groupEnd()
+                    ->groupEnd()
+                    ->orderBy('s.fecha', 'ASC')
+                    ->orderBy('s.hora', 'ASC')
+                    ->orderBy('s.id_sesion', 'ASC')
+                    ->limit(3)
+                    ->get()
+                    ->getResultArray();
+                
             }
         }
 
@@ -62,6 +96,7 @@ class Home extends BaseController
             'tutoriasCompletadas' => $tutoriasCompletadas,
             'horasAprendizaje' => $horasAprendizaje,
             'progresoGeneral' => $progresoGeneral,
+            'proximasSesiones' => $proximasSesiones,
             'nombreUsuario' => session()->get('usuario_nombre'),
             'lenguajes' => $lenguajes,
             'totalLenguajes' => count($lenguajes),

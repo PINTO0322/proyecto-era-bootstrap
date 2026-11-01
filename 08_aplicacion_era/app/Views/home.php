@@ -180,24 +180,82 @@
             </p>
         </section>
 
-        <section class="bg-white border rounded-4 p-4 shadow-sm mb-5"
+                <section class="bg-white border rounded-4 p-4 shadow-sm mb-5"
                  aria-labelledby="titulo-sesiones">
-            <h2 id="titulo-sesiones" class="h4 fw-bold mb-4">
+            <h2 id="titulo-sesiones" class="h4 fw-bold mb-2">
                 Próximas Sesiones
             </h2>
 
-            <div class="text-center bg-light rounded-3 p-4">
-                <i class="bi bi-calendar-event fs-1 text-primary"
-                   aria-hidden="true"></i>
+            <p class="small text-secondary mb-4">
+                Hasta tres próximas tutorías solicitadas o confirmadas.
+                Horarios de Colombia.
+            </p>
 
-                <h3 class="h5 mt-3">
-                    Consulta aquí tus próximas tutorías
-                </h3>
+            <?php if ($proximasSesiones === null): ?>
+                <div class="alert alert-warning mb-0">
+                    No fue posible identificar tu perfil de estudiante.
+                    Cierra sesión e ingresa nuevamente con tu cuenta de estudiante.
+                </div>
 
-                <p class="text-secondary mb-0">
-                    Esta sección está pendiente de conexión con tus sesiones.
-                </p>
-            </div>
+            <?php elseif ($proximasSesiones === []): ?>
+                <div class="text-center bg-light rounded-3 p-4">
+                    <i class="bi bi-calendar-event fs-1 text-primary"
+                       aria-hidden="true"></i>
+
+                    <h3 class="h5 mt-3">
+                        No tienes próximas sesiones
+                    </h3>
+
+                    <p class="text-secondary mb-0">
+                        Cuando tengas una tutoría solicitada o confirmada
+                        con fecha y hora futuras, aparecerá aquí.
+                    </p>
+                </div>
+
+            <?php else: ?>
+                <div class="row g-3">
+                    <?php foreach ($proximasSesiones as $sesion): ?>
+                        <div class="col-md-6 col-xl-4">
+                            <article class="border rounded-3 p-3 h-100">
+                                <span class="badge text-bg-primary mb-3">
+                                    <?= esc($sesion['estado']) ?>
+                                </span>
+
+                                <h3 class="h5 fw-bold">
+                                    <?= esc($sesion['tema']) ?>
+                                </h3>
+
+                                <p class="text-secondary">
+                                    <i class="bi bi-person me-2"
+                                       aria-hidden="true"></i>
+                                    <?= esc($sesion['tutor']) ?>
+                                </p>
+
+                                <p class="mb-2">
+                                    <i class="bi bi-calendar-event me-2"
+                                       aria-hidden="true"></i>
+                                    <?= esc(
+                                        \DateTimeImmutable::createFromFormat(
+                                            '!Y-m-d',
+                                            $sesion['fecha']
+                                        )->format('d/m/Y')
+                                    ) ?>
+                                </p>
+
+                                <p class="mb-2">
+                                    <i class="bi bi-clock me-2"
+                                       aria-hidden="true"></i>
+                                    <?= esc(substr($sesion['hora'], 0, 5)) ?>
+                                </p>
+
+                                <p class="mb-0">
+                                    Duración: <?= (int) $sesion['duracion'] ?> minutos
+                                </p>
+                            </article>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
         </section>
         <div class="d-flex justify-content-between align-items-end mb-4">
             <div><p class="section-kicker">APRENDIZAJE</p><h2 class="fw-bold mb-0">Selecciona un lenguaje</h2></div>
