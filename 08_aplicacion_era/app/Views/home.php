@@ -276,24 +276,76 @@
                         <?php endforeach; ?>
         </div>
 
-        <section class="bg-white border rounded-4 p-4 shadow-sm mt-5"
+                <section class="bg-white border rounded-4 p-4 shadow-sm mt-5"
                  aria-labelledby="titulo-tutores">
-            <h2 id="titulo-tutores" class="h4 fw-bold mb-4">
+            <h2 id="titulo-tutores" class="h4 fw-bold mb-2">
                 Tutores
             </h2>
 
-            <div class="text-center bg-light rounded-3 p-4">
-                <i class="bi bi-people fs-1 text-primary"
-                   aria-hidden="true"></i>
+            <p class="small text-secondary mb-4">
+                Hasta tres tutores con cuenta activa, ordenados por nombre.
+                La disponibilidad para agendar se consulta por separado.
+            </p>
 
-                <h3 class="h5 mt-3">
-                    Encuentra apoyo para tu aprendizaje
-                </h3>
+            <?php if ($tutoresPanel === null): ?>
+                <div class="alert alert-warning mb-0">
+                    Inicia sesión con una cuenta de estudiante para consultar los tutores.
+                </div>
 
-                <p class="text-secondary mb-0">
-                    Esta sección está pendiente de conexión con la información de los tutores.
-                </p>
-            </div>
+            <?php elseif ($tutoresPanel === []): ?>
+                <div class="text-center bg-light rounded-3 p-4">
+                    <i class="bi bi-people fs-1 text-primary"
+                       aria-hidden="true"></i>
+
+                    <h3 class="h5 mt-3">
+                        No hay tutores activos para mostrar
+                    </h3>
+
+                    <p class="text-secondary mb-0">
+                        Los perfiles aparecerán aquí cuando haya tutores con cuenta activa.
+                    </p>
+                </div>
+
+            <?php else: ?>
+                <div class="row g-3">
+                    <?php foreach ($tutoresPanel as $tutor): ?>
+                        <div class="col-md-6 col-xl-4">
+                            <article class="border rounded-3 p-3 h-100">
+                                <i class="bi bi-person-circle fs-1 text-primary"
+                                   aria-hidden="true"></i>
+
+                                <h3 class="h5 fw-bold mt-3">
+                                    <?= esc($tutor['nombre']) ?>
+                                </h3>
+
+                                <p class="text-secondary mb-2">
+                                    <?= esc(
+                                        trim($tutor['especialidad'] ?? '')
+                                        ?: 'Especialidad sin especificar'
+                                    ) ?>
+                                </p>
+
+                                <p class="mb-2">
+                                    Experiencia:
+                                    <?= esc(
+                                        trim($tutor['nivel_experiencia'] ?? '')
+                                        ?: 'Sin especificar'
+                                    ) ?>
+                                </p>
+
+                                <p class="fw-semibold mb-0">
+                                    $<?= number_format(
+                                        (float) $tutor['tarifa_hora'],
+                                        0,
+                                        ',',
+                                        '.'
+                                    ) ?> COP por hora
+                                </p>
+                            </article>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
         </section>
     </section>
 </main>

@@ -90,6 +90,28 @@ class Home extends BaseController
                 
             }
         }
+                $tutoresPanel = null;
+
+        if (
+            session()->get('autenticado')
+            && (int) session()->get('usuario_rol') === 2
+        ) {
+            $tutoresPanel = $db->table('tutor AS t')
+                ->select(
+                    "t.id_tutor, t.especialidad, t.nivel_experiencia,
+                    t.tarifa_hora,
+                    CONCAT(u.nombre, ' ', u.apellido) AS nombre"
+                )
+                ->join('usuario AS u', 'u.id_usuario = t.id_usuario')
+                ->where('u.id_estado', 1)
+                ->where('u.id_rol', 3)
+                ->orderBy('u.nombre', 'ASC')
+                ->orderBy('u.apellido', 'ASC')
+                ->orderBy('t.id_tutor', 'ASC')
+                ->limit(3)
+                ->get()
+                ->getResultArray();
+        }
 
         return view('home', [
             'autenticado' => (bool) session()->get('autenticado'),
@@ -97,6 +119,7 @@ class Home extends BaseController
             'horasAprendizaje' => $horasAprendizaje,
             'progresoGeneral' => $progresoGeneral,
             'proximasSesiones' => $proximasSesiones,
+            'tutoresPanel' => $tutoresPanel,
             'nombreUsuario' => session()->get('usuario_nombre'),
             'lenguajes' => $lenguajes,
             'totalLenguajes' => count($lenguajes),
